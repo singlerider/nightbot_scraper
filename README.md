@@ -33,3 +33,13 @@ To install all dependencies locally (preferably inside your activated virtualenv
 ```shell
 pip install -r requirements.txt
 ```
+
+If you'd like to use PhantomJS, you'll need to install it. You can find instructions for doing so at http://phantomjs.org/
+
+## To Run
+```shell
+python scraper.py ChannelNameGoesHere
+```
+
+The script will print a list of command objects and the number identified.
+
