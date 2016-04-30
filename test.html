@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html class="no-js ng-scope" ng-app="nightbot" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+        <meta charset="utf-8"/>
+        <title class="ng-binding" ng-bind="'Nightbot - ' + $state.current.title">Nightbot - Commands: Curvyllama</title>
+        <meta content="" name="description"/>
+        <meta content="width=device-width" name="viewport"/>
+        <link href="favicon.ico" rel="shortcut icon"/>
+        <link href="apple-touch-icon.png" rel="apple-touch-icon"/>
+        <base href="/"/>
+        <link href="styles/vendor-28e60fd1.css" rel="stylesheet"/>
+        <link href="styles/app-addd4868.css" rel="stylesheet"/>
+    </head>
+    <body class=" pace-done" ng-class="{'gray-bg': $state.current.altBackground}">
+        <div class="pace pace-inactive">
+            <div aria-labelledby="" class="pace-progress progress ng-isolate-scope" data-progress="99" data-progress-text="100%" ng-transclude="" style="transform: translate3d(100%, 0px, 0px);">
+                <div class="pace-progress-inner ng-scope"></div>
+            </div>
+            <div class="pace-activity"></div>
+        </div>
+        <!-- uiView:  -->
+        <div class="ng-scope" style="" ui-view="">
+            <div class="ng-scope" id="wrapper">
+                <!-- ngInclude: 'components/common/navigation.html' -->
+                <div class="ng-scope" ng-include="'components/common/navigation.html'">
+                    <nav class="navbar-default navbar-static-side hidden-print ng-scope" role="navigation" side-navigation="">
+                        <div class="sidebar-collapse">
+                            <ul class="nav" id="side-menu">
+                                <li class="nav-header">
+                                    <div class="profile-element"><img alt="Nightbot" height="36" src="assets/images/text-logo.png" width="150"/></div>
+                                    <div class="logo-element"><img alt="NB" height="30" src="assets/images/nav-logo-flipped-inverted.png" width="27"/></div>
+                                </li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/dashboard" ui-sref="panel.dashboard"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
+                                <li class="ng-hide" ng-class="{active: ('panel.commands' | includedByState)}" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')">
+                                    <a href="/commands" ui-sref="panel.commands.index"><i class="fa fa-magic"></i> <span class="nav-label">Commands</span> <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level collapse" ng-class="{in: ('panel.commands' | includedByState)}">
+                                        <li ui-sref-active="active"><a href="/commands/custom" ui-sref="panel.commands.custom">Custom</a></li>
+                                        <li ui-sref-active="active"><a href="/commands/default" ui-sref="panel.commands.default">Default</a></li>
+                                    </ul>
+                                </li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/giveaways" ui-sref="panel.giveaways"><i class="fa fa-gift"></i> <span class="nav-label">Giveaways</span></a></li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/logs" ui-sref="panel.logs"><i class="fa fa-database"></i> <span class="nav-label">Logs</span></a></li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/regulars" ui-sref="panel.regulars"><i class="fa fa-star"></i> <span class="nav-label">Regulars</span></a></li>
+                                <li class="ng-hide" ng-class="{active: ('panel.song_requests' | includedByState)}" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')">
+                                    <a href="/song_requests" ui-sref="panel.song_requests.autodj"><i class="fa fa-music"></i> <span class="nav-label">Song Requests</span> <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level collapse" ng-class="{in: ('panel.song_requests' | includedByState)}">
+                                        <li ui-sref-active="active"><a href="/song_requests" ui-sref="panel.song_requests.autodj">AutoDJ</a></li>
+                                        <li ui-sref-active="active"><a href="/song_requests/playlist" ui-sref="panel.song_requests.playlist">Playlist</a></li>
+                                    </ul>
+                                </li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/spam_protection" ui-sref="panel.spam_protection"><i class="fa fa-filter"></i> <span class="nav-label">Spam Protection</span></a></li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/timers" ui-sref="panel.timers"><i class="fa fa-clock-o"></i> <span class="nav-label">Timers</span></a></li>
+                                <li class="ng-hide" ng-show="User.isLoggedIn() &amp;&amp; !$state.includes('panel.public')" ui-sref-active="active"><a href="/integrations" ui-sref="panel.integrations"><i class="fa fa-cubes"></i> <span class="nav-label">Integrations</span></a></li>
+                                <li class="active" ng-show="$state.includes('panel.public')" ui-sref-active="active"><a href="/t/curvyllama/commands" ui-sref="panel.public.commands({ network: $stateParams.network, name: $stateParams.name })"><i class="fa fa-magic"></i> <span class="nav-label">Commands</span></a></li>
+                                <li class="" ng-class="{active: ('panel.public.song_requests' | includedByState)}" ng-show="$state.includes('panel.public')">
+                                    <a href="/t/curvyllama/song_requests" ui-sref="panel.public.song_requests.queue({ network: $stateParams.network, name: $stateParams.name })"><i class="fa fa-music"></i> <span class="nav-label">Song Requests</span> <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level collapse" ng-class="{in: ('panel.public.song_requests' | includedByState)}">
+                                        <li ui-sref-active="active"><a href="/t/curvyllama/song_requests" ui-sref="panel.public.song_requests.queue({ network: $stateParams.network, name: $stateParams.name })">Queue</a></li>
+                                        <li ui-sref-active="active"><a href="/t/curvyllama/song_requests/playlist" ui-sref="panel.public.song_requests.playlist({ network: $stateParams.network, name: $stateParams.name })">Playlist</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="https://docs.nightbot.tv" target="_blank"><i class="fa fa-life-ring"></i> <span class="nav-label">Help Docs</span></a></li>
+                                <li><a href="https://community.nightdev.com/c/nightbot" target="_blank"><i class="fa fa-comments-o"></i> <span class="nav-label">Support Forum</span></a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="gray-bg panel.public.commands" id="page-wrapper" style="min-height: 476px;">
+                    <!-- ngInclude: 'components/common/topnavbar.html' -->
+                    <div class="ng-scope" ng-include="'components/common/topnavbar.html'">
+                        <div class="row border-bottom ng-scope">
+                            <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                                <div class="navbar-header">
+                                    <span minimalize-sidebar=""><a class="navbar-minimalize minimalize-style btn btn-primary " href="" ng-click="minimalize()"><i class="fa fa-bars"></i></a></span>
+                                    <form action="https://docs.nightbot.tv/" class="navbar-form-custom ng-pristine ng-valid" method="get" role="search" target="_blank">
+                                        <div class="form-group"><input class="form-control" name="search" placeholder="Search our help docs.." type="text"/></div>
+                                    </form>
+                                </div>
+                                <ul class="nav navbar-top-links navbar-right">
+                                    <li class="" ng-show="!User.isLoggedIn()" style="margin-right: 30px;"><a href="/login?return_to=%2Ft%2Fcurvyllama%2Fcommands" ui-sref="login({ return_to: $location.path() })"><i class="fa fa-sign-in"></i> Login</a></li>
+                                    <li class="dropdown ng-hide" ng-hide="!User.isLoggedIn()">
+                                        <a aria-expanded="false" class="dropdown-toggle count-info" data-toggle="dropdown" href="#"><i class="fa fa-bell"></i> <span class="label label-primary ng-binding ng-hide" ng-show="User.alerts.length"></span></a>
+                                        <ul class="dropdown-menu dropdown-alerts">
+                                            <!-- ngRepeat: alert in User.alerts -->
+                                            <li class="" ng-hide="User.alerts.length">
+                                                <div class="text-center link-block">No alerts yet</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown ng-hide" ng-hide="!User.isLoggedIn()">
+                                        <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" style="padding-bottom: 0px;"><img alt="image" class="img-circle" height="30" ng-show="!API.channel() || API.channel() === User._id" style="margin-top: -6px;" width="30"/> <img alt="image" class="img-circle ng-hide" height="30" ng-hide="!API.channel() || API.channel() === User._id" style="margin-top: -6px;" width="30"/> <img alt="image" class="img-circle ng-hide" height="30" ng-hide="!API.channel() || API.channel() === User._id" style="position: absolute;right: 0px;width: 20px;height: 20px;bottom: 0px;" width="30"/></a>
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                            <li style="padding-left: 10px;">Channels You Manage</li>
+                                            <!-- ngRepeat: channel in User.managedChannels -->
+                                            <li class="divider"></li>
+                                            <li class="ng-scope" ng-controller="admin_tool"><a class="ng-hide" ng-click="manageChannel()" ng-show="User.admin || User.providerAdmin"><i class="fa fa-bolt" style="margin-right: 3px;"></i> Manage a Channel</a></li>
+                                            <li><a href="/account/managers" ui-sref="panel.account.managers"><i class="fa fa-wrench" style="margin-right: 3px;"></i> Settings</a></li>
+                                            <li><a ng-click="User.logout()"><i class="fa fa-sign-out" style="margin-right: 3px;"></i> Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- uiView:  -->
+                    <div class="ng-scope" ui-view="">
+                        <!-- uiView: undefined -->
+                        <ui-view class="ng-scope">
+                            <div class="row wrapper border-bottom white-bg page-heading ng-scope">
+                                <div class="col-lg-9">
+                                    <h2 class="ng-binding" ng-bind="$state.current.title">Commands: Curvyllama</h2>
+                                    <ol class="breadcrumb">
+                                        <li><a href="/dashboard" ui-sref="panel.dashboard">Home</a></li>
+                                        <li class="active"><strong class="ng-binding" ng-bind="$state.current.title">Commands: Curvyllama</strong></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="wrapper wrapper-content ng-scope">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Channel Commands</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="dataTables_wrapper form-inline no-footer" id="DataTables_Table_0_wrapper">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                                                <label>
+                                                                    Show
+                                                                    <select aria-controls="DataTables_Table_0" class="form-control input-sm" name="DataTables_Table_0_length">
+                                                                        <option value="10">10</option>
+                                                                        <option value="25">25</option>
+                                                                        <option value="50">50</option>
+                                                                        <option value="100">100</option>
+                                                                    </select>
+                                                                    entries
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <div class="dataTables_filter" id="DataTables_Table_0_filter"><label>Search:<input aria-controls="DataTables_Table_0" class="form-control input-sm" placeholder="" type="search"/></label></div>
+                                                        </div>
+                                                    </div>
+                                                    <table aria-describedby="DataTables_Table_0_info" class="table table-striped table-bordered ng-isolate-scope dataTable no-footer" datatable="" dt-columns="dtColumns" dt-instance="dtInstance" dt-options="dtOptions" id="DataTables_Table_0" role="grid" style="width: 100%; display: table;">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th aria-controls="DataTables_Table_0" aria-label="Command: activate to sort column descending" aria-sort="ascending" class="sorting_asc" colspan="1" rowspan="1" style="width: 75px;" tabindex="0">Command</th>
+                                                                <th aria-controls="DataTables_Table_0" aria-label="Message: activate to sort column ascending" class="hidden-xs sorting" colspan="1" rowspan="1" style="width: 410px;" tabindex="0">Message</th>
+                                                                <th aria-controls="DataTables_Table_0" aria-label="Userlevel: activate to sort column ascending" class="hidden-xs sorting" colspan="1" rowspan="1" style="width: 61px;" tabindex="0">Userlevel</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!4head</td>
+                                                                <td class=" hidden-xs">"Came for SYPS, stayed for the 4Head "-Triforce 2015 4Head /</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!alicia</td>
+                                                                <td class=" hidden-xs">Alicia is amazing only on March 19th because it is her birthday. Still worst mod NA</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!ayy</td>
+                                                                <td class=" hidden-xs">LMAO Sullustan https://www.youtube.com/watch?v=YyR3JCf6rRk BrainSlug</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!backseat</td>
+                                                                <td class=" hidden-xs">No one likes a backseat driver! Please try not to dispense advice unless Curvy asks for it.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!banned</td>
+                                                                <td class=" hidden-xs">Get dat ass ban KevinTurtle</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!battlefront</td>
+                                                                <td class=" hidden-xs">Curvy's in-game name is c00tastic</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!blitzy</td>
+                                                                <td class=" hidden-xs">blitzyUK pleb confirmed ethanCreep</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!brb</td>
+                                                                <td class=" hidden-xs">YOOOO [touser] is going to grab a drink, grab a snack or abuse the toilet. They will return soon!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!bro</td>
+                                                                <td class=" hidden-xs">Cool Story Bro.... ResidentSleeper</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!bttv</td>
+                                                                <td class=" hidden-xs">You can download BetterTwitchTV at getbt.tv</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!bug</td>
+                                                                <td class=" hidden-xs">Cuvry has broken the game [count] times</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!cali</td>
+                                                                <td class=" hidden-xs">We're playing some 2-Llama BRs with a killer streamer. Check out xcaligrrlx's stream and give her some llama love. Watch both streams at http://goo.gl/BqCBTu</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!carlpoppa</td>
+                                                                <td class=" hidden-xs">JIGGY JAR JAR DOO!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!chair</td>
+                                                                <td class=" hidden-xs">There's a chair over there!! PogChamp</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!challenge</td>
+                                                                <td class=" hidden-xs">Want Curvy to take part in a challenge of your choice? Here's how: http://i.imgur.com/mRxgo0J.jpg</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!chant</td>
+                                                                <td class=" hidden-xs">Pookie Pookie Pookie!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!charmander</td>
+                                                                <td class=" hidden-xs">Charmander, SHUT THE FUCK UP!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!chat</td>
+                                                                <td class=" hidden-xs">Chat pls!!! ethanCough</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!chewy</td>
+                                                                <td class=" hidden-xs">No, Chewbacca doesn't die in the new Star Wars movie. The stream title is referring to an in-game character that Curvy met in H1Z1 yesterday.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!china</td>
+                                                                <td class=" hidden-xs">TIE JUAN NUMBA WON</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!clash</td>
+                                                                <td class=" hidden-xs">Join the Llama Army on Clash of Clans! Clan Tag is #Y8QLC9GC</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!cri</td>
+                                                                <td class=" hidden-xs">i cri evrytim BibleThump BibleThump BibleThump</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!cringe</td>
+                                                                <td class=" hidden-xs">ethanCough haHAA ethanCough haHAA ethanCough haHAA</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!curry</td>
+                                                                <td class=" hidden-xs">Curry Llama http://goo.gl/vtOXZX</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!curvyface</td>
+                                                                <td class=" hidden-xs">https://goo.gl/kbVwvc</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!curvymic</td>
+                                                                <td class=" hidden-xs">Curvy's Mic is the Worker Bee http://neatmic.com/bee/worker-bee-microphone</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!curvywut</td>
+                                                                <td class=" hidden-xs">https://gyazo.com/f5111f8f8c7c7eb011616be6f9e52f8c</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!cutecats</td>
+                                                                <td class=" hidden-xs">http://puu.sh/k0Hki.jpg</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!daddy</td>
+                                                                <td class=" hidden-xs">DADDYS BACK YOU BITCHES!!!!!!!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!dance</td>
+                                                                <td class=" hidden-xs">Curvy Dancing http://imgur.com/vNsCch3</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!date</td>
+                                                                <td class=" hidden-xs">Twitch.tv is not a dating website. If you are looking for a certain someone special, please frequent one of these suggested websites: www.jdate.com/ www.match.com/ www.farmersonly.com/ and Grinder.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!david</td>
+                                                                <td class=" hidden-xs">David is easily impressed EleGiggle</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!desk</td>
+                                                                <td class=" hidden-xs">There are two desks over there ┬──┬ ┬──┬ !!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!dinaquote</td>
+                                                                <td class=" hidden-xs">Am I dead? Am I a ghost right now? AM I FUCKING DEAD!? WHERE THE FUCK IS MY BODY???</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!discord</td>
+                                                                <td class=" hidden-xs">Subs can now hang out in the Llama Discord! To join, sign up at discordapp.com, click the gear in the bottom left besides your username, then navigate to 'Connections'. Once there, you can connect your Twitch account. Refresh, and the Llamas server should appear! (someone make a command bae beeee)</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!donate</td>
+                                                                <td class=" hidden-xs">If you wish to support CurvyLlama by donating you can do so here: https://www.twitchalerts.com/donate/CurvyLlama</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!donate2</td>
+                                                                <td class=" hidden-xs">Here is the link to donate to Curvyllama https://www.twitchalerts.com/donate/CurvyLlama</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!donosounds</td>
+                                                                <td class=" hidden-xs">trigger some sounds! http://bit.ly/1NjJXSQ | http://bit.ly/1MSjkHx</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!dont</td>
+                                                                <td class=" hidden-xs">DO NOT CONTEST!!!! OhGod</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!drive</td>
+                                                                <td class=" hidden-xs">"Drive to Survive": Curvyllama earns $1.00 per-kill, with a bonus $3.00 for every person she *** by running them over. It's Carmageddon meets The Walking Dead! Earns 600 treats.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!drunk</td>
+                                                                <td class=" hidden-xs">Damanda ish be drunk</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!dst</td>
+                                                                <td class=" hidden-xs">Don't forget to set your clocks forward one hour tonight. It's not like you needed the extra sleep anyway. Kappa</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!duck</td>
+                                                                <td class=" hidden-xs">Fuck Duck! Fuck Duck! Fuck Duck! Fuck Duck! SwiftRage</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!dxracer</td>
+                                                                <td class=" hidden-xs">Please refer any questions about Curvyllama's DX Racer to @Haffa1414 , our resident chair expert!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!ech</td>
+                                                                <td class=" hidden-xs">ech-ech-ech-ech-ech WutFace</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!emmo</td>
+                                                                <td class=" hidden-xs">MOMMA LLAMA!!!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!emo</td>
+                                                                <td class=" hidden-xs">Check out this crazy H1 streamer! http://www.douyu.com/70231</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!emulator</td>
+                                                                <td class=" hidden-xs">Curvy is using the Project 64 emulator to play Ocarina of Time. Check it out at: http://goo.gl/lrQ4T3</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!eski</td>
+                                                                <td class=" hidden-xs">Eskimobros: Destroyer of Worlds......if worlds had four wheels and were in fact vehicles 4Head</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!ethancough</td>
+                                                                <td class=" hidden-xs">watch this video if you want to learn about ethanCough and want cancer https://www.youtube.com/watch?v=jiRtHrbz3d8</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!face</td>
+                                                                <td class=" hidden-xs">"I hope your face is nice"-Curvyllama 2016</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!fallen</td>
+                                                                <td class=" hidden-xs">To the role players, the car thieves, and even the wookies, we remember [touser] and their aid to curvy. Rip [touser]</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!fam</td>
+                                                                <td class=" hidden-xs">Welcome to the Llama Army [touser]!!! We already love you!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!fame</td>
+                                                                <td class=" hidden-xs">"Win the Game, Claim the Fame": Curvyllama earns $1.00 per-kill, and a $25.00 bonus if she wins the whole round. Not for the faint-hearted, since she's racked up over 40 wins so far! Earns 400 treats.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!fb</td>
+                                                                <td class=" hidden-xs">https://www.facebook.com/AmandaDefrance</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!fine</td>
+                                                                <td class=" hidden-xs">It's fine! It's fine!™</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!flip</td>
+                                                                <td class=" hidden-xs">Curvy has flipped her car [count] times!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!flow</td>
+                                                                <td class=" hidden-xs">Hama llama, sima llama, hama llama, someone had to cut my baby sister out my mama!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!focus</td>
+                                                                <td class=" hidden-xs">It's a tight BR! Amanda will probably not be focused on chat at the moment OMGScoots</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!follow</td>
+                                                                <td class=" hidden-xs">Be sure to hit the follow button with your llama hooves! It's a free way to support the stream! curvyWut /</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!food</td>
+                                                                <td class=" hidden-xs">EAT, AMANDA!!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!friendlist</td>
+                                                                <td class=" hidden-xs">Curvy Llama does not add people due to her friends list being full.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!fuckthis</td>
+                                                                <td class=" hidden-xs">Fuck this shit, I'm out... https://www.youtube.com/watch?v=5FjWe31S_0g&amp;feature=youtu.be</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!gametime</td>
+                                                                <td class=" hidden-xs">Want to challenge me to a little game? Type !Fame !Drive !Speak !Smash or !Shotty for rules</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!groupa</td>
+                                                                <td class=" hidden-xs">Fek off, ya FUGGIN' GROUPAS!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!gt</td>
+                                                                <td class=" hidden-xs">curvy8ubbles</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!guac</td>
+                                                                <td class=" hidden-xs">http://goo.gl/vu8Hka</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!h1z1shirt</td>
+                                                                <td class=" hidden-xs">Check out our curvyMLG shirt in H1Z1! http://bit.ly/1NbEFwD</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!hackerpls</td>
+                                                                <td class=" hidden-xs">Watch Amanda explain the ways of the internet to her mom and help her order a hacker (low Key): http://bit.ly/1UU9IiQ</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!haffa</td>
+                                                                <td class=" hidden-xs">#BlameHaffa NotLikeThis</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!haffa1</td>
+                                                                <td class=" hidden-xs">"Awm guna go east ub Crumberry sew Awm guud awn lewt." -Haffa 2015</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!haffa2</td>
+                                                                <td class=" hidden-xs">"He yoosually shewts me in dis hauses." -Haffa 2015</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!haffa3</td>
+                                                                <td class=" hidden-xs">It's a me Haffa!!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!haffaquote</td>
+                                                                <td class=" hidden-xs">"I was going into the guy in the bathroom"-Haffa 3/19/16</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!haffaquote1</td>
+                                                                <td class=" hidden-xs">It'sa me, Haffa! - Haffa 2015</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!haffaquote4</td>
+                                                                <td class=" hidden-xs">"I'll do Triforce"</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!hang</td>
+                                                                <td class=" hidden-xs">HANG TIGHT, LLAMAS. CURVYLLAMA WILL BE BACK SHORTLY.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!hater</td>
+                                                                <td class=" hidden-xs">Don't be a hater, be a masturbater ! https://goo.gl/WTiOdf</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!hero</td>
+                                                                <td class=" hidden-xs">[touser] is the hero this channel deserves!!!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!heyguys</td>
+                                                                <td class=" hidden-xs">https://pbs.twimg.com/media/CNcOywCUkAAJfgV.png</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!holdthephone</td>
+                                                                <td class=" hidden-xs">Dont pop the 12 month resub yet. Hold it. Think of your grandma, or dead mice etc. Just hold it back</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!hookah</td>
+                                                                <td class=" hidden-xs">She is smoking a hookah boys!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!hug</td>
+                                                                <td class=" hidden-xs">[user] squeezes [touser] with all of his/her loving might!! &lt;3 &lt;3 &lt;3</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!ig</td>
+                                                                <td class=" hidden-xs">https://instagram.com/curvyllama</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!ihatediscord</td>
+                                                                <td class=" hidden-xs">I know I have said this [count] times but did you know I hate discord?</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!introsong</td>
+                                                                <td class=" hidden-xs">Lost Woods Dubstep Remix by Ephixa - https://www.youtube.com/watch?v=NU75uz0b8EU</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!jackbox</td>
+                                                                <td class=" hidden-xs">Go to http://jackbox.tv and enter the 4-letter code to join our audience!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!jamesquote1</td>
+                                                                <td class=" hidden-xs">"That buttsex one was still my favorite." Peligrosocortez 12/2/2015</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!joe</td>
+                                                                <td class=" hidden-xs">"Bluh-ee hell!!"-JoeCow 2015 'til infinity</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!joew</td>
+                                                                <td class=" hidden-xs">https://goo.gl/OhiJLR</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!juan</td>
+                                                                <td class=" hidden-xs">"One more guys" Kappa</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!juice</td>
+                                                                <td class=" hidden-xs">Todays juice is: BananaNut Bread!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!kappa</td>
+                                                                <td class=" hidden-xs">KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD KappaHD</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!kinda</td>
+                                                                <td class=" hidden-xs">"I kinda like missed my flight kinda, again, kinda"-Curvyllama KKona</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!laptop</td>
+                                                                <td class=" hidden-xs">Curvy now has a lappy for streaming on the go! It's a MSI GE72 (i7, 16gb RAM, GTX 960M) (http://goo.gl/Bk2HPG)</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!lee</td>
+                                                                <td class=" hidden-xs">&lt;3 Much love and support for you Lee!!! &lt;3</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!llamasound</td>
+                                                                <td class=" hidden-xs">https://www.youtube.com/watch?v=Sxs6KxHHvkk this is what a Llama sounds like.</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!llamatreats</td>
+                                                                <td class=" hidden-xs">You earn treats by chilling out in the chat! You can use them to redeem things on the stream! There is a list in the description and we'll be implementing more things as the stream continues to grow!</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="odd" role="row">
+                                                                <td class="sorting_1">!lol</td>
+                                                                <td class=" hidden-xs">https://pbs.twimg.com/tweet_video/CYKBSuvWYAANprY.mp4</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                            <tr class="even" role="row">
+                                                                <td class="sorting_1">!lorenzo</td>
+                                                                <td class=" hidden-xs">https://vine.co/u/1012573078779322368</td>
+                                                                <td class=" hidden-xs">everyone</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <div aria-live="polite" class="dataTables_info" id="DataTables_Table_0_info" role="status">Showing 1 to 100 of 234 entries</div>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_0_paginate">
+                                                                <ul class="pagination">
+                                                                    <li class="paginate_button first disabled" id="DataTables_Table_0_first"><a aria-controls="DataTables_Table_0" data-dt-idx="0" href="#" tabindex="0">First</a></li>
+                                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous"><a aria-controls="DataTables_Table_0" data-dt-idx="1" href="#" tabindex="0">Previous</a></li>
+                                                                    <li class="paginate_button active"><a aria-controls="DataTables_Table_0" data-dt-idx="2" href="#" tabindex="0">1</a></li>
+                                                                    <li class="paginate_button "><a aria-controls="DataTables_Table_0" data-dt-idx="3" href="#" tabindex="0">2</a></li>
+                                                                    <li class="paginate_button "><a aria-controls="DataTables_Table_0" data-dt-idx="4" href="#" tabindex="0">3</a></li>
+                                                                    <li class="paginate_button next" id="DataTables_Table_0_next"><a aria-controls="DataTables_Table_0" data-dt-idx="5" href="#" tabindex="0">Next</a></li>
+                                                                    <li class="paginate_button last" id="DataTables_Table_0_last"><a aria-controls="DataTables_Table_0" data-dt-idx="6" href="#" tabindex="0">Last</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui-view>
+                    </div>
+                    <!-- ngInclude: 'components/common/footer.html' -->
+                    <div class="ng-scope" ng-include="'components/common/footer.html'">
+                        <div class="footer ng-scope" ng-hide="$state.current.altBackground">
+                            <div class="pull-right"><a href="https://api-docs.nightbot.tv" target="_blank">API Docs</a> · <a href="/terms" ui-sref="panel.terms">Terms of Service</a> · <a href="/privacy" ui-sref="panel.privacy">Privacy Policy</a></div>
+                            <div><strong>Copyright</strong> © 2015 NightDev, LLC. All Rights Reserved.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script async="" src="//www.google-analytics.com/analytics.js"></script><script src="scripts/vendor-36d7c2a1.js"></script><script src="scripts/app-7fe4b7df.js"></script>
+    </body>
+</html>
