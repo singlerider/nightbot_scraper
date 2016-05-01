@@ -35,7 +35,7 @@ def init_driver():
     return driver
 
 
-def extract(soup):
+def extract(soup, CONTINUE=True, STOP=False):
     tbody = soup.find("tbody")
     rows = tbody.find_all("tr", role="row")
     for row in rows:
@@ -45,6 +45,15 @@ def extract(soup):
         command["response"] = sub_rows[1].get_text()
         command["user_level"] = sub_rows[2].get_text()
         commands.append(command)
+    next_button_li = driver.find_element_by_id("DataTables_Table_0_next")
+    next_button_a = next_button_li.find_elements_by_tag_name("a")
+    next_button_a[0].click()
+    soup = BeautifulSoup(str(driver.page_source), "html.parser")
+    if (soup.find("li", class_="paginate_button next disabled")
+            is None and CONTINUE is True):
+        extract(soup)
+    elif CONTINUE is True and STOP is False:
+        extract(soup, CONTINUE=False, STOP=True)
 
 
 def lookup(driver, query):
@@ -59,17 +68,7 @@ def lookup(driver, query):
             limit.send_keys(Keys.DOWN)
         limit.send_keys(Keys.RETURN)
         soup = BeautifulSoup(str(driver.page_source), "html.parser")
-        paginate_buttons = BeautifulSoup(str(soup.find_all(
-            class_="dataTables_paginate paging_full_numbers")), "html.parser")
-        number_of_next_clicks = (len(paginate_buttons.find_all("li")) - 5)
         extract(soup)  # first page
-        for n in range(number_of_next_clicks):  # all subsequent pages
-            # time.sleep(3)
-            next_button_li = driver.find_element_by_id("DataTables_Table_0_next")
-            next_button_a = next_button_li.find_elements_by_tag_name("a")
-            next_button_a[0].click()
-            soup = BeautifulSoup(str(driver.page_source), "html.parser")
-            extract(soup)
         output = json.dumps({"commands": commands}, indent=2)
         print(output)
         print(len(commands))
