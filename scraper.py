@@ -1,4 +1,6 @@
+import json
 import sys
+import time
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -14,7 +16,7 @@ try:  # To allow for python 2 and 3 compatability
 except:
     pass
 
-CHANNEL = sys.argv[1]
+CHANNEL = sys.argv[1].lower()
 
 url = "https://beta.nightbot.tv/t/{channel}/commands".format(
     channel=CHANNEL)
@@ -62,13 +64,13 @@ def lookup(driver, query):
         number_of_next_clicks = (len(paginate_buttons.find_all("li")) - 5)
         extract(soup)  # first page
         for n in range(number_of_next_clicks):  # all subsequent pages
+            # time.sleep(3)
             next_button_li = driver.find_element_by_id("DataTables_Table_0_next")
             next_button_a = next_button_li.find_elements_by_tag_name("a")
-            # time.sleep(1)
             next_button_a[0].click()
             soup = BeautifulSoup(str(driver.page_source), "html.parser")
             extract(soup)
-        print(commands)
+        print(json.dumps({"commands": commands}))
         print(len(commands))
     except TimeoutException:
         print("I don't think they have Nightbot enabled DansGame")
@@ -76,5 +78,4 @@ def lookup(driver, query):
 if __name__ == "__main__":
     driver = init_driver()
     lookup(driver, "Selenium")
-    # time.sleep(3)
     driver.quit()
