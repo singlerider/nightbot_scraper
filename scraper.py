@@ -70,8 +70,11 @@ def lookup(driver, query):
             next_button_a[0].click()
             soup = BeautifulSoup(str(driver.page_source), "html.parser")
             extract(soup)
-        print(json.dumps({"commands": commands}))
+        output = json.dumps({"commands": commands}, indent=2)
+        print(output)
         print(len(commands))
+        with open("saved_data/" + CHANNEL + ".json", "w") as f:  # write to file
+            f.write(output)
     except TimeoutException:
         print("I don't think they have Nightbot enabled DansGame")
 
