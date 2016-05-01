@@ -35,7 +35,7 @@ def init_driver():
     return driver
 
 
-def extract(soup, CONTINUE=True, STOP=False):
+def extract(soup, CONTINUE=True, FIRST_PAGE=True):
     tbody = soup.find("tbody")
     rows = tbody.find_all("tr", role="row")
     for row in rows:
@@ -51,9 +51,10 @@ def extract(soup, CONTINUE=True, STOP=False):
     soup = BeautifulSoup(str(driver.page_source), "html.parser")
     if (soup.find("li", class_="paginate_button next disabled")
             is None and CONTINUE is True):
-        extract(soup)
-    elif CONTINUE is True and STOP is False:
-        extract(soup, CONTINUE=False, STOP=True)
+        extract(soup, FIRST_PAGE=False)
+    elif (soup.find("li", class_="paginate_button next disabled")
+            is not None and FIRST_PAGE is False and CONTINUE is True):
+        extract(soup, CONTINUE=False, FIRST_PAGE=False)
 
 
 def lookup(driver, query):
@@ -68,12 +69,12 @@ def lookup(driver, query):
             limit.send_keys(Keys.DOWN)
         limit.send_keys(Keys.RETURN)
         soup = BeautifulSoup(str(driver.page_source), "html.parser")
-        extract(soup)  # first page
+        extract(soup)  # recursive
         output = json.dumps({"commands": commands}, indent=2)
         print(output)
         print(len(commands))
-        with open("saved_data/" + CHANNEL + ".json", "w") as f:  # write to file
-            f.write(output)
+        with open("saved_data/" + CHANNEL + ".json", "w") as f:
+            f.write(output)  # write to file
     except TimeoutException:
         print("I don't think they have Nightbot enabled DansGame")
 
